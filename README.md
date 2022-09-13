@@ -105,15 +105,15 @@ This is what sets the subject name in the registry.
 
 Query the registry and see the schemas are registered
 
-``curl -GET http://localhost:8081/subjects/
+``curl -GET http://localhost:8081/subjects/``
   
 This will return the following:
 
-``["transactiontype1","transactiontype2"]
+``["transactiontype1","transactiontype2"]``
 
 Later it will be necessary to produce messages to the topic using these two schemas. To do this we will need the schema ids for each schema. These can be retrieved with the following commands:
 
-``curl -GET http://localhost:8081/subjects/transactiontype1/versions/1 | jq
+``curl -GET http://localhost:8081/subjects/transactiontype1/versions/1 | jq``
 
 This will return some JSON that looks like this:
 
@@ -128,7 +128,7 @@ This will return some JSON that looks like this:
 
 Make a note of the id (in this case it is 1) and then make the same call again on the second schema type:
 
-``curl -GET http://localhost:8081/subjects/transactiontype2/versions/1 | jq
+``curl -GET http://localhost:8081/subjects/transactiontype2/versions/1 | jq``
 
 The output will be something like this:
 
@@ -173,7 +173,7 @@ Now produce a message to the topic, validated against the first schema type that
 
 This is interactive (the -i option) so you just paste your message to the command line and it will be consumed correctly and validated against the first schemas in the schema registry.  Paste this into the command terminal window:
 
-{"id":1,"amount":23.45,"accountname":"primary"}
+``{"id":1,"amount":23.45,"accountname":"primary"}``
 
 If you move over to the terminal window where your consumer is running you should see this message output on the screen as it is consumed.
 
@@ -190,7 +190,7 @@ sudo docker exec -i schema-registry kafka-avro-console-producer \
 
 Note that this is now using the schema with id 2.  The id should be a string and the final key value pair will have the name accounttype.  Paste the following in to the terminal as a value message
 
-``{"id":"001","amount":23.4,"accounttype":"premier"}
+``{"id":"001","amount":23.4,"accounttype":"premier"}``
 
 The consumer will output this in its terminal window indicating that it is valid.
 
@@ -198,7 +198,7 @@ We have now produced to the topic successfully using two different schemas.
 
 Paste the following message into the producer and you should see an exception.  In this example we are using a message that doesn’t conform to schema 2.  The type of the id is not a string and the last key name is invalid (it should be accounttype not accountid).
 
-``{"id":1,"amount":12.0,"accountid":"account1"} 
+``{"id":1,"amount":12.0,"accountid":"account1"} ``
 
 Note that it is still possible to produce to the topic without enforcing schema validation.  We have only seen in this example enforcement occurring at the producer and consumer level and not at the broker level.  With this configuration there is nothing to stop a rogue consumer or producer interacting with the topic.  Run an ultra simple consumer in a new terminal window with the following command:
 
@@ -219,7 +219,7 @@ sudo docker exec -i broker kafka-console-producer \
 
 And paste in the interactive terminal the following message:
 
-``{"account":"invalidaccount","amount":12.5}
+``{"account":"invalidaccount","amount":12.5}``
 
 It will still be accepted at the broker level
 
@@ -246,16 +246,14 @@ Now repeat the previous command produce to the topic:
 
 ```
 sudo docker exec -i broker kafka-console-producer \
-
    --topic transactions \
-
    --broker-list broker:29092
 ```
 
   
 Paste in the interactive terminal the following message:
 
-``{"account":"invalidaccount","amount":12.5}
+``{"account":"invalidaccount","amount":12.5}``
 
 An exception is thrown.
 
@@ -263,13 +261,9 @@ However, repeating previous commands that validate against the schema registry w
 
 ```
 sudo docker exec -i schema-registry kafka-avro-console-consumer \
-
     --topic transactions  \
-
     --bootstrap-server broker:29092   \
-
     --property schema.registry.url=http://schema-registry:8081 \
-
     --property value.subject.name.strategy=io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
 ```
 
@@ -278,20 +272,15 @@ And then produce again to the topic with the following command:
 
 ```
 sudo docker exec -i schema-registry kafka-avro-console-producer \
-
     --topic transactions \
-
     --broker-list broker:29092 \
-
     --property value.schema.id=1 \
-
     --property schema.registry.url=http://schema-registry:8081 \
-
     --property value.subject.name.strategy=io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
 ```
 
 And send this message:
 
-``{"id":1,"amount":23.45,"accountname":"primary"}
+``{"id":1,"amount":23.45,"accountname":"primary"}``
 
 This will be processed by the cluster and the consumer.
