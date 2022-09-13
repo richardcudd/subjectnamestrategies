@@ -147,54 +147,33 @@ Take note of this schema id as well (in this case 2).
 
 The setup is now in place to produce the two different types of message to the topic.  First off we will fire up the consumer to pick messages off the topic as they arrive.  Use the following command to consume from the topic whilst validating against the schema registry:
 
-sudo docker exec -i schema-registry kafka-avro-console-consumer \
-
+'''sudo docker exec -i schema-registry kafka-avro-console-consumer \
     --topic transactions  \
-
     --from-beginning \
-
     --bootstrap-server broker:29092   \
-
     --property schema.registry.url=http://schema-registry:8081 \
-
     --property value.subject.name.strategy=io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
-
+'''
   
 
 (The above assumes a containerized environment)
 
-  
-
 Leave this running in your terminal window and open new terminal window.
 
-  
+Now produce a message to the topic, validated against the first schema type that was created with the following command:  
 
-Now produce a message to the topic, validated against the first schema type that was created with the following command:
-
-  
-
-sudo docker exec -i schema-registry kafka-avro-console-producer \
-
+'''sudo docker exec -i schema-registry kafka-avro-console-producer \
     --topic transactions \
-
     --broker-list broker:29092 \
-
     --property value.schema.id=1 \
-
     --property schema.registry.url=http://schema-registry:8081 \
-
     --property value.subject.name.strategy=io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
-
+'''
   
 
 This is interactive (the -i option) so you just paste your message to the command line and it will be consumed correctly and validated against the first schemas in the schema registry.  Paste this into the command terminal window:
 
-  
-
 {"id":1,"amount":23.45,"accountname":"primary"}
-
-  
-  
 
 If you move over to the terminal window where your consumer is running you should see this message output on the screen as it is consumed.
 
@@ -225,11 +204,8 @@ Note that it is still possible to produce to the topic without enforcing schema 
 
 ```
 sudo docker exec broker kafka-console-consumer \
-
    --topic transactions \
-
    --bootstrap-server broker:29092 
-
    --from-beginning 
 ```
 
@@ -237,9 +213,7 @@ Now produce to the topic with the following command
 
 ```
 sudo docker exec -i broker kafka-console-producer \
-
    --topic transactions \
-
    --broker-list broker:29092
 ```
 
