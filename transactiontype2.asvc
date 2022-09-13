@@ -1,0 +1,11 @@
+{
+    "type": "record",
+    "namespace": "io.confluent.csta.examples",
+    "name": "transactiontype2",
+    "fields": [
+        {"name": "id", "type": "string"},
+        {"name": "amount", "type": "double"},
+        {"name": "accounttype", "type": "string"}
+    ]
+}
+
