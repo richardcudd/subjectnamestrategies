@@ -13,7 +13,7 @@ This will provide pretty much all that is  needed to get up and running with an
 Take the following steps:
 
 ```
-git clone [https://github.com/confluentinc/cp-all-in-one.git](https://github.com/confluentinc/cp-all-in-one.git)
+git clone https://github.com/confluentinc/cp-all-in-one.git
 
 cd cp-all-in-one
 
